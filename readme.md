@@ -40,6 +40,10 @@ Change lobby.html
 var play_this_game = 'your_game.html';
 ```
 
+# Documentation
+- [project report](http://tyt2y3.github.io/F.Lobby/project%20report%20updated.pdf)
+- [presentation slides](http://tyt2y3.github.io/F.Lobby/project%20slides.pdf)
+
 # Notes
 - Works on all major browsers including mobile!
 - I plan to release a node.js equivalent soon
