@@ -39,7 +39,10 @@ Change lobby.html
 var play_this_game = 'your_game.html';
 ```
 
-### Works on all major browsers including mobile!
+# Notes
+- Works on all major browsers including mobile!
+- I plan to release a node.js equivalent soon
+- This was originally a project submitted to comp2021 in HKUST
 
 # License
 
