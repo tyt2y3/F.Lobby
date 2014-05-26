@@ -7,7 +7,7 @@
 if( typeof define !=='undefined')
 	define([],define_module);
 else
-	window.Fcore_network = define_module();
+	window.network = define_module();
 
 function define_module()
 {
