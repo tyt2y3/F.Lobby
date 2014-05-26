@@ -49,6 +49,10 @@ var play_this_game = 'your_game.html';
 - I plan to release a node.js equivalent soon
 - This was originally a project submitted to comp2021 on Spring 2014 in HKUST and was selected as one of the Best 3 projects
 
+# Screenshot
+![](screenshot.png)
+[Demo video](https://www.youtube.com/watch?v=0x-9Ul3iwHo)
+
 # License
 
 Copyright (c) 2014 Tsang Hao Fung
