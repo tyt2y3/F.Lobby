@@ -1,10 +1,11 @@
-# HTML5 player-vs-player chatroom + game server in Perl
-aka "F.Lobby Perl"
+#F.Lobby
+
+### HTML5 player-vs-player chatroom + game server in Perl
 
 # Usage
 
 1
-install [http://mojolicio.us/](mojolicious)
+install [mojolicious](http://mojolicio.us/)
 ```
 $ curl get.mojolicio.us | sh
 ```
@@ -42,7 +43,7 @@ var play_this_game = 'your_game.html';
 # Notes
 - Works on all major browsers including mobile!
 - I plan to release a node.js equivalent soon
-- This was originally a project submitted to comp2021 in HKUST
+- This was originally a project submitted to comp2021 on Spring 2014 in HKUST and was selected as one of the Best 3 projects
 
 # License
 
