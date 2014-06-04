@@ -41,9 +41,10 @@ go to
 http://127.0.0.1:8080/lobby.html
 ```
 
-# Integrate it into your game
+# Client library network.js
+### Integrate it into your game
 
-Look at bvb.html for example
+Look at bvb.html for usage example
 ```
 network.setup_peer(host,active,id1,id2)
 network.setInterval(frame,1000/30)
