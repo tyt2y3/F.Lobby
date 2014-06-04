@@ -1,8 +1,8 @@
 #F.Lobby
 
-### HTML5 player-vs-player chatroom + game server in Perl
+### HTML5 player-vs-player chatroom + game server in Perl & node.js
 
-# Usage
+# Usage (Perl)
 
 1
 install [mojolicious](http://mojolicio.us/)
@@ -20,6 +20,25 @@ morbo lobby.pl
 go to
 ```
 http://127.0.0.1:3000/lobby.html
+```
+
+# Usage (node.js)
+
+1
+install [node.js](http://nodejs.org/)
+```
+npm install
+```
+
+2 start the server
+```
+node lobby.js
+```
+
+3
+go to
+```
+http://127.0.0.1:8080/lobby.html
 ```
 
 # Integrate it into your game
@@ -46,7 +65,6 @@ var play_this_game = 'your_game.html';
 
 # Notes
 - Works on all major browsers including mobile!
-- I plan to release a node.js equivalent soon
 - This was originally a project submitted to comp2021 on Spring 2014 in HKUST and was selected as one of the Best 3 projects
 
 # Screenshot
