@@ -5,6 +5,11 @@ use Mojolicious::Lite;
 my $names = {};
 my $peers = {};
 
+post '/protocol' => sub {
+	my $self = shift;
+	$self->render(data => 'F.Lobby 001');
+};
+
 post '/login' => sub {
 	my $self = shift;
 	my $name = $self->req->body;

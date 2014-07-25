@@ -26,6 +26,9 @@ app.use(function(req, res, next) {
 app.get('/', function (req, res) {
 	res.sendfile(__dirname + '/public/lobby.html');
 });
+app.get('/protocol', function (req, res) {
+	res.send('F.Lobby 001');
+});
 app.post('/login', function(request, res) {
 	var name = request.rawBody;
 	console.log(name);
