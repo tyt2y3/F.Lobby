@@ -15,7 +15,7 @@ function define_module()
 		target_interval,
 		next_frame,
 		lasttime = new Date().getTime(),
-		buffer = {};
+		buffer = [];
 
 	function set_interval(a,b)
 	{
@@ -38,58 +38,46 @@ function define_module()
 	function frame() //timer frame
 	{
 		if( timer_callback)
-		if( buffer.time!==undefined && buffer.time!==null)
+		if( buffer[0])
 		{
 			var newtime = new Date().getTime(),
 				diff = newtime-lasttime;
-			if( diff > target_interval-10) //too slow
+			if( diff > target_interval-5) //too slow
 			{
-				var result = timer_callback(buffer.time,buffer.data,next_frame);
+				var result = timer_callback(buffer[0].time,buffer[0].data,next_frame);
 				lasttime = newtime;
-				buffer.time=null;
-				buffer.data=null;
+				buffer.shift();
 				if( result)
 					next_frame(result);
 			}
 		}
 	}
+	function dataframe(time,data)
+	{
+		buffer.push({time:time,data:data});
+		frame();
+	}
 	
-	function setup_websocket(host,active,id1,id2)
+	function setup_websocket(host,id1,id2)
 	{
 		host = host.replace(/^http/,'ws')+'/peer';
 		if( !id1 || !id2)
 		{
-			log('network: no id.');
+			log('invalid id.');
 			return false;
 		}
 		var time = 0,
-			connected = {},
+			connected,
 			ws; //connection
 		var console_log = document.getElementById('console-log');
 		connectws();
 		
-		function dataframe(time,data)
-		{
-			buffer.time = time;
-			buffer.data = data;
-			frame();
-		}
-		
 		next_frame=function(data)
 		{
 			ws.send(JSON.stringify({name:id1,target:id2,t:time,d:data}));
-			if( !active)
-				time++;
 		}
 		
 		function connectws()
-		{
-			if( active)
-				active_connect();
-			if( !active)
-				passive_connect();
-		}
-		function active_connect()
 		{
 			var retry;
 			var num_tried=0;
@@ -101,7 +89,7 @@ function define_module()
 				retry = setInterval(function(){
 					log('initiate handshake...');
 					if( retry)
-						ws.send(JSON.stringify({name:id1,target:id2,m:'hi',id:id1})); //handshake
+						ws.send(JSON.stringify({name:id1,target:id2,m:'hi'})); //handshake
 					if( num_tried++ >=9)
 					{
 						clearInterval(retry);
@@ -116,81 +104,40 @@ function define_module()
 			}
 			ws.onmessage=function(mess)
 			{
-				data = JSON.parse(mess.data);
+				var data = JSON.parse(mess.data);
 				if( data.m==='hi')
 				{
-					if( data.id===id2 && !connected[data.id]) //verify id
+					ws.send(JSON.stringify({name:id1,target:id2,m:'hi back'})); //handshake
+				}
+				else if( data.m==='hi back')
+				{
+					if( data.name===id2 && !connected) //verify id
 					{
 						log('handshake success');
-						connected[data.id] = true;
-						cid = data.id;
-						dataframe(time,data.d);
+						connected = data.name;
 						if( retry)
 						{
 							clearInterval(retry);
 							retry = null;
 						}
+						dataframe(time,data.d);
 					}
 					else
 					{
 						log('unknown peer');
 					}
 				}
-				else if( cid)
+				else if( data.mm)
 				{
-					if( data.t!==time)
-						log('out of sync',data.t,time);
-					else
-					{
-						if( active)
-							time++;
-						dataframe(time,data.d);
-					}
+					onmessage(data.mm);
+				}
+				else if( connected)
+				{
+					time++;
+					dataframe(time,data.d);
 				}
 			}
 		}
-		function passive_connect()
-		{
-			var cid;
-			ws = new WebSocket(host);
-			ws.onopen=function()
-			{
-				log('web socket opened');
-				ws.send(JSON.stringify({open:'open',name:id1}));
-			}
-			ws.onclose=function()
-			{
-				log('socket closed');
-			}
-			ws.onmessage=function(mess)
-			{
-				data = JSON.parse(mess.data);
-				if( data.m==='hi')
-				{
-					if( data.id===id2 && !connected[data.id]) //verify id
-					{
-						log('handshake success');
-						ws.send(JSON.stringify({name:id1,target:id2,m:'hi',id:id1})); //handshake
-						connected[data.id] = true;
-						cid = data.id;
-					}
-					else
-					{
-						log('unknown peer');
-					}
-				}
-				else if( cid)
-				{
-					if( data.t!==time)
-						log('out of sync');
-					else
-					{
-						dataframe(time,data.d);
-					}
-				}
-			}
-		}
-		
 		function log(mess)
 		{
 			if( console_log) console_log.value+=mess+'\n';

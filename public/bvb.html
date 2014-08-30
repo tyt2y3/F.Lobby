@@ -38,15 +38,12 @@
 <textarea id='console-log' style='width:300px;height:400px;'></textarea>
 <script src='network.js'></script>
 <script>
+(function(){
 var param = get_query();
-if(!param.pvp) return;
+if(param.pvp===undefined) return;
 if(param.transport!=='websocket') return;
 //--------------------------network setup---------------------------
-if( param.pvp==='active')
-	network.setup_peer(location.origin,true,param.id1,param.id2);
-else
-	network.setup_peer(location.origin,false,param.id1,param.id2);
-
+network.setup_peer(location.origin,param.id1,param.id2);
 network.setInterval(frame,1000/30); //30fps
 //------------------------------------------------------------------
 
@@ -55,7 +52,8 @@ var canvas = document.getElementById('canvas'),
 	ball1 = document.getElementById('ball'+(param.pvp==='active'?1:2)),
 	ball2 = document.getElementById('ball'+(param.pvp==='active'?2:1)),
 	mousex = 100,
-	mousey = 100;
+	mousey = 100,
+	started = false;
 ball1.style.left = '100px';
 ball1.style.top = '100px';
 ball2.style.left = '100px';
@@ -64,12 +62,14 @@ document.addEventListener('touchmove', touchmove, false);
 document.addEventListener('mousemove', mousemove, false);
 function mousemove(e)
 {
+	if( !started) return;
 	e=e?e:event;
 	mousex=e.clientX;
 	mousey=e.clientY;
 }
 function touchmove(e)
 {
+	if( !started) return;
 	var touches = e.touches;
 	if( touches.length>0)
 	{
@@ -80,6 +80,7 @@ function touchmove(e)
 }
 function frame(time,data)
 {
+	started = true;
 	var ox = parseInt(ball1.style.left),
 		oy = parseInt(ball1.style.top);
 	ball1.style.left=mousex+'px';
@@ -91,7 +92,7 @@ function frame(time,data)
 		ball2.style.top=data.vy+parseInt(ball2.style.top)+'px';
 		if( parseInt(ball2.style.left)!==data.x ||
 			parseInt(ball2.style.top)!==data.y)
-			alert('synchronization error!');
+			console.log('synchronization error!',parseInt(ball2.style.left),data.x);
 		calculate_fps(30);
 	}
 	return {
@@ -137,6 +138,7 @@ var calculate_fps = (function(){
 			fps.value = Math.round(1000/diff*skip)+'fps';
 		}
 	}
+}());
 }());
 </script>
 </body>

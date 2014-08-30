@@ -7,7 +7,7 @@ my $peers = {};
 
 post '/protocol' => sub {
 	my $self = shift;
-	$self->render(data => 'F.Lobby 001');
+	$self->render(data => '{"name":"F.Lobby","protocol":"F.Lobby 001"}');
 };
 
 post '/login' => sub {

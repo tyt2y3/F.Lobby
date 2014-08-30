@@ -27,7 +27,7 @@ app.get('/', function (req, res) {
 	res.sendfile(__dirname + '/public/lobby.html');
 });
 app.get('/protocol', function (req, res) {
-	res.send('F.Lobby 001');
+	res.send('{"name":"F.Lobby","protocol":"F.Lobby 001"}');
 });
 app.post('/login', function(request, res) {
 	var name = request.rawBody;
@@ -69,14 +69,13 @@ wsschat.on('connection', function(ws) {
 
 wsspeer.on('connection', function(ws) {
 	var name;
-	console.log('Client connected.');
 	ws.on('message', function(data) {
 		data = JSON.parse(data);
 		if( data.open) {
 			if( !peers[data.name]) {
 				name = data.name;
 				peers[data.name] = ws;
-				console.log('Client '+name+' connected.');
+				console.log('Peer '+name+' connected.');
 			}
 		}
 		if( data.target && peers[data.target]) {
@@ -85,7 +84,7 @@ wsspeer.on('connection', function(ws) {
 	});
 
 	ws.on('close', function() {
-		console.log('Client '+name+' disconnected');
+		console.log('Peer '+name+' disconnected');
 		delete peers[name];
 	});
 });

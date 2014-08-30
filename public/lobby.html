@@ -44,7 +44,7 @@ body
 	min-height:40px;
 	position:relative;
 }
-.pjf-header
+.lodge .pjf-header
 {
 	height:50px;
 	min-height:50px;
@@ -53,22 +53,22 @@ body
 	font-size:15px;
 	line-height:50px;
 }
-.nav
+.lodge .nav
 {
 	padding-left: 10px;
 }
-.nav > a
+.lodge .nav > a
 {
 	color:#FFF;
 	padding:10px;
 	text-decoration:none;
 	border:1px solid white;
 }
-.nav > a:hover
+.lodge .nav > a:hover
 {
 	background:#449;
 }
-.pjf-bar
+.lodge .pjf-bar
 {
 	padding-left:180px;
 	height:40px;
@@ -207,19 +207,18 @@ var play_this_game = 'bvb.html';
 
 var ws, //webSocket
 	name,
-	id = UID(),
 	selected,
 	selected_id,
 	dialog,
-	waiting_timer;
+	waiting_timer,
+	id = (function UID()
+	{	//generate a unique ID
+		return 'xxxxxxxx'.replace(/[xy]/g, function(c) {
+			var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+			return v.toString(16);
+		});
+	}());
 
-function UID()
-{	//generate a unique ID
-	return 'xxxxxxxx'.replace(/[xy]/g, function(c) {
-		var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-		return v.toString(16);
-	});
-}
 $('.lodge .login form').submit(function(e){
 	//login to the chat room
 	name = $.trim($('.login form .name').val());
