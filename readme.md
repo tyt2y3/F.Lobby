@@ -60,10 +60,6 @@ Change lobby.html
 var play_this_game = 'your_game.html';
 ```
 
-# Documentation
-- [project report](http://tyt2y3.github.io/F.Lobby/project%20report%20updated.pdf)
-- [presentation slides](http://tyt2y3.github.io/F.Lobby/project%20slides.pdf)
-
 # Notes
 - Works on all major browsers including mobile!
 - This was originally a project submitted to comp2021 on Spring 2014 in HKUST and was selected as one of the Best 3 projects
